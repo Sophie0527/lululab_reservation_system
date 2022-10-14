@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+import NextStep from '../components/Reservation/NextStep';
 
-const Reservation = () => {
+const Reservation = props => {
+  const { setReservationOpen } = props;
   const [selectTimeOpen, setSelectTimeOpen] = useState(false);
   const openTimeButton = () => {
     if (!selectTimeOpen) {
@@ -38,46 +40,61 @@ const Reservation = () => {
   };
   const valid = validation();
 
+  const [nextStepOpen, setNextStepOpen] = useState(false);
+
+  const openNextStep = () => {
+    setNextStepOpen(true);
+  };
+
   return (
     <Container>
       <ContainerBox>
-        <ReservationBox>
-          <ContentBox>
-            <SelectDate>
-              <h5>날짜</h5>
-              <span>2022. 10. 14 (금)</span>
-            </SelectDate>
-            <SelectTime onClick={openTimeButton}>
-              <div>
-                <h5>시간</h5>
-                <span className={selectTimeOpen && 'inactive'}>
-                  시간을 선택해 주세요.
-                </span>
-              </div>
-              {!selectTimeOpen ? <DownOutlined /> : <UpOutlined />}
-            </SelectTime>
-            {selectTimeOpen && (
-              <SelectTimeButtonBox>
-                <div>
-                  {timeList.map((time, i) => {
-                    return (
-                      <button
-                        key={i}
-                        onClick={() => handleSelectTime(i)}
-                        className={selectTime[i] && 'active'}
-                      >
-                        {time}
-                      </button>
-                    );
-                  })}
-                </div>
-              </SelectTimeButtonBox>
-            )}
-          </ContentBox>
-        </ReservationBox>
-        <NextButton className={valid && 'active'} disabled={!valid}>
-          다음단계
-        </NextButton>
+        {!nextStepOpen && (
+          <>
+            <ReservationBox>
+              <ContentBox>
+                <SelectDate>
+                  <h5>날짜</h5>
+                  <span>2022. 10. 14 (금)</span>
+                </SelectDate>
+                <SelectTime onClick={openTimeButton}>
+                  <div>
+                    <h5>시간</h5>
+                    <span className={selectTimeOpen && 'inactive'}>
+                      시간을 선택해 주세요.
+                    </span>
+                  </div>
+                  {!selectTimeOpen ? <DownOutlined /> : <UpOutlined />}
+                </SelectTime>
+                {selectTimeOpen && (
+                  <SelectTimeButtonBox>
+                    <div>
+                      {timeList.map((time, i) => {
+                        return (
+                          <button
+                            key={i}
+                            onClick={() => handleSelectTime(i)}
+                            className={selectTime[i] && 'active'}
+                          >
+                            {time}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </SelectTimeButtonBox>
+                )}
+              </ContentBox>
+            </ReservationBox>
+            <NextButton
+              className={valid && 'active'}
+              disabled={!valid}
+              onClick={openNextStep}
+            >
+              다음단계
+            </NextButton>
+          </>
+        )}
+        {nextStepOpen && <NextStep setReservationOpen={setReservationOpen} />}
       </ContainerBox>
     </Container>
   );
@@ -90,7 +107,11 @@ const Container = styled.div`
   justify-content: center;
 `;
 const ContainerBox = styled.div`
-  padding-top: 50px;
+  padding: 20px;
+  margin-top: 50px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 2px 2px 3px 2px #dadada;
 `;
 const ReservationBox = styled.div`
   width: 350px;
