@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ArrowLeftOutlined, CloseOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import axios from 'axios';
-import { set, setDate } from 'date-fns';
 
 const NextStep = ({
   setReservationOpen,
@@ -28,7 +27,7 @@ const NextStep = ({
     phone: '',
     address: '',
   });
-  console.log(reservationValue);
+
   const { name, phone, address } = reservationValue;
   const [selectType, setSelectType] = useState([false]);
   const handleSelectType = idx => {
@@ -56,34 +55,31 @@ const NextStep = ({
 
   const success = () => {
     alert(
-      name +
-        '님' +
-        ' ' +
-        selectValue +
-        '시' +
-        ' ' +
-        selectTypeValue +
-        ' ' +
-        '예약이 완료되었습니다.'
+      `${name}님 ${selectDay} ${time}에 ${selectTypeValue} 예약이 완료 되었습니다. 예약번호 :${oderDay}_${timeNumber}를 꼭 확인해 주세요  `
     );
     setReservationOpen(false);
+    window.location.reload();
   };
 
   const goOrder = index => {
-    axios.put(
-      'https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/' +
-        oderDay +
-        '_' +
-        timeNumber +
-        '.json',
-      { ...reservationValue }
-    );
-    axios.put(
-      `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order_list/${
-        oderDay + '_' + timeNumber
-      }.json`,
-      { order: oderDay + '_' + timeNumber }
-    );
+    axios
+      .put(
+        'https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/' +
+          oderDay +
+          '_' +
+          timeNumber +
+          '.json',
+        { ...reservationValue }
+      )
+      .then(
+        axios.put(
+          `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order_list/${
+            oderDay + '_' + timeNumber
+          }.json`,
+          { order: oderDay + '_' + timeNumber }
+        )
+      )
+      .then(success());
   };
 
   return (
