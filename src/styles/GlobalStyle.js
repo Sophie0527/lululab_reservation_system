@@ -10,8 +10,10 @@ const GlobalStyle = createGlobalStyle`
   }
   
   body {
+   
     .site-layout-background {
   background: #fff;
+  
 
 }
 

@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DownOutlined, UpOutlined, CloseOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import NextStep from '../Reservation/NextStep';
 
-const Reservation = ({ setReservationOpen, selectDay, oderDay }) => {
+const Reservation = ({
+  setReservationOpen,
+  selectDay,
+  oderDay,
+  TIMELISTDATA,
+}) => {
   const [time, setTime] = useState('시간을 선택해 주세요.');
   const [timeNumber, setTimeNumber] = useState(null);
+
   const closeModal = () => {
     setReservationOpen(false);
   };
@@ -45,6 +51,11 @@ const Reservation = ({ setReservationOpen, selectDay, oderDay }) => {
   const openNextStep = () => {
     setNextStepOpen(true);
   };
+  const btnStyle = {
+    color: 'red',
+    border: '1px solid red',
+    backgroundColor: 'rgba(255,0,0,0.2)',
+  };
 
   return (
     <Container>
@@ -70,14 +81,18 @@ const Reservation = ({ setReservationOpen, selectDay, oderDay }) => {
                 {selectTimeOpen && (
                   <SelectTimeButtonBox>
                     <div>
-                      {TIMELISTDATA.map((time, i) => {
-                        return (
+                      {TIMELISTDATA.map((els, idx) => {
+                        return els === '마감' ? (
+                          <button key={idx} disabled style={btnStyle}>
+                            {els}
+                          </button>
+                        ) : (
                           <button
-                            key={i}
-                            onClick={() => handleSelectTime(i)}
-                            className={selectTime[i] && 'active'}
+                            key={idx}
+                            onClick={() => handleSelectTime(idx)}
+                            className={selectTime[idx] && 'active'}
                           >
-                            {time}
+                            {els}
                           </button>
                         );
                       })}
@@ -101,8 +116,6 @@ const Reservation = ({ setReservationOpen, selectDay, oderDay }) => {
             setNextStepOpen={setNextStepOpen}
             closeModal={closeModal}
             selectValue={selectValue}
-            //예약시 데이터베이스로 보낼값
-            //날짜, 시간,시간인덱스
             selectDay={selectDay}
             timeNumber={timeNumber}
             time={time}
@@ -231,16 +244,3 @@ const NextButton = styled.button`
     cursor: pointer;
   }
 `;
-
-const TIMELISTDATA = [
-  '09:00',
-  '10:00',
-  '11:00',
-  '12:00',
-  '13:00',
-  '14:00',
-  '15:00',
-  '16:00',
-  '17:00',
-  '18:00',
-];

@@ -7,10 +7,12 @@ import moment from 'moment/moment';
 import 'moment/locale/ko';
 
 const Calendar = ({ openReservation, setSelectDay, setOrderDay }) => {
+  const today = new Date();
+
   return (
     <DatePicker
       monthsShown={1}
-      minDate={new Date()}
+      minDate={today}
       locale={ko}
       disabledKeyboardNavigation
       inline
