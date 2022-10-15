@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
-import { DownOutlined, UpOutlined } from '@ant-design/icons';
+import React, { useState, useEffect } from 'react';
+import { DownOutlined, UpOutlined, CloseOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import NextStep from '../components/Reservation/NextStep';
 
 const Reservation = props => {
   const { setReservationOpen } = props;
+
+  const closeModal = () => {
+    setReservationOpen(false);
+  };
+
   const [selectTimeOpen, setSelectTimeOpen] = useState(false);
   const openTimeButton = () => {
     if (!selectTimeOpen) {
@@ -15,13 +20,15 @@ const Reservation = props => {
   };
 
   const [timeList, setTimeList] = useState([]);
-  fetch('http://localhost:3000/datas/time.json', {
-    method: 'GET',
-  })
-    .then(res => res.json())
-    .then(data => {
-      setTimeList(data);
-    });
+  useEffect(() => {
+    fetch('http://localhost:3000/datas/time.json', {
+      method: 'GET',
+    })
+      .then(res => res.json())
+      .then(data => {
+        setTimeList(data);
+      });
+  }, [setTimeList]);
 
   const [selectTime, setSelectTime] = useState([false]);
   const handleSelectTime = idx => {
@@ -31,6 +38,8 @@ const Reservation = props => {
     }
     setSelectTime(newArr);
   };
+  const selectIndex = selectTime.indexOf(true);
+  const selectValue = timeList[selectIndex];
 
   const validation = () => {
     if (selectTime.includes(true)) {
@@ -51,6 +60,9 @@ const Reservation = props => {
       <ContainerBox>
         {!nextStepOpen && (
           <>
+            <MoveButtonBox>
+              <CloseOutlined onClick={closeModal} />
+            </MoveButtonBox>
             <ReservationBox>
               <ContentBox>
                 <SelectDate>
@@ -94,7 +106,14 @@ const Reservation = props => {
             </NextButton>
           </>
         )}
-        {nextStepOpen && <NextStep setReservationOpen={setReservationOpen} />}
+        {nextStepOpen && (
+          <NextStep
+            setReservationOpen={setReservationOpen}
+            setNextStepOpen={setNextStepOpen}
+            closeModal={closeModal}
+            selectValue={selectValue}
+          />
+        )}
       </ContainerBox>
     </Container>
   );
@@ -112,6 +131,14 @@ const ContainerBox = styled.div`
   background-color: white;
   border-radius: 5px;
   box-shadow: 2px 2px 3px 2px #dadada;
+`;
+const MoveButtonBox = styled.div`
+  display: flex;
+  justify-content: right;
+  padding-bottom: 2px;
+  svg {
+    cursor: pointer;
+  }
 `;
 const ReservationBox = styled.div`
   width: 350px;
