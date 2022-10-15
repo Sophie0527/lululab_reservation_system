@@ -1,43 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeftOutlined, CloseOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+import axios from 'axios';
+import { set, setDate } from 'date-fns';
 
-const NextStep = props => {
-  const { setReservationOpen, setNextStepOpen, closeModal, selectValue } =
-    props;
-
+const NextStep = ({
+  setReservationOpen,
+  setNextStepOpen,
+  closeModal,
+  selectValue,
+  selectDay,
+  timeNumber,
+  time,
+  oderDay,
+}) => {
   const goPreviousStep = () => {
     setNextStepOpen(false);
   };
 
+  const [typeNumber, setTypeNumber] = useState(null);
+
   const [reservationValue, setReservationValue] = useState({
+    order_number: oderDay + '_' + timeNumber,
+    time: time,
+    day: selectDay,
     name: '',
     phone: '',
     address: '',
   });
+  console.log(reservationValue);
   const { name, phone, address } = reservationValue;
-
-  const [reservationTypeList, setReservationTypeList] = useState([]);
-  useEffect(() => {
-    fetch('http://localhost:3000/datas/type.json', {
-      method: 'GET',
-    })
-      .then(res => res.json())
-      .then(data => {
-        setReservationTypeList(data);
-      });
-  }, [setReservationTypeList]);
-
   const [selectType, setSelectType] = useState([false]);
   const handleSelectType = idx => {
-    const newArr = Array(reservationTypeList.length).fill(false);
+    const newArr = Array(TYPELISTDATA.length).fill(false);
     if (!selectType[idx]) {
       newArr[idx] = true;
     }
     setSelectType(newArr);
   };
   const selectTypeIndex = selectType.indexOf(true);
-  const selectTypeValue = reservationTypeList[selectTypeIndex];
+  const selectTypeValue = TYPELISTDATA[selectTypeIndex];
 
   const validation = (name, phone, address) => {
     if (
@@ -65,6 +67,23 @@ const NextStep = props => {
         '예약이 완료되었습니다.'
     );
     setReservationOpen(false);
+  };
+
+  const goOrder = index => {
+    axios.put(
+      'https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/' +
+        oderDay +
+        '_' +
+        timeNumber +
+        '.json',
+      { ...reservationValue }
+    );
+    axios.put(
+      `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order_list/${
+        oderDay + '_' + timeNumber
+      }.json`,
+      { order: oderDay + '_' + timeNumber }
+    );
   };
 
   return (
@@ -120,11 +139,17 @@ const NextStep = props => {
           <Label>
             <h3>Reservation Type</h3>
             <div>
-              {reservationTypeList.map((type, i) => {
+              {TYPELISTDATA.map((type, i) => {
                 return (
                   <button
                     key={i}
-                    onClick={() => handleSelectType(i)}
+                    onClick={() => {
+                      handleSelectType(i);
+                      setReservationValue({
+                        ...reservationValue,
+                        type: i + 1,
+                      });
+                    }}
                     className={selectType[i] && 'active'}
                   >
                     {type}
@@ -137,7 +162,9 @@ const NextStep = props => {
         <ReservationButton
           className={valid && 'active'}
           disabled={!valid}
-          onClick={success}
+          onClick={() => {
+            goOrder();
+          }}
         >
           예약하기
         </ReservationButton>
@@ -219,3 +246,5 @@ const ReservationButton = styled.button`
     cursor: pointer;
   }
 `;
+
+const TYPELISTDATA = ['진료', '검진', '관리', '처방'];
