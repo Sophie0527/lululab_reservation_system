@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { ArrowLeftOutlined, CloseOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 
 const NextStep = props => {
-  const { setReservationOpen } = props;
+  const { setReservationOpen, setNextStepOpen, closeModal, selectValue } =
+    props;
+
+  const goPreviousStep = () => {
+    setNextStepOpen(false);
+  };
 
   const [reservationValue, setReservationValue] = useState({
     name: '',
@@ -12,13 +18,15 @@ const NextStep = props => {
   const { name, phone, address } = reservationValue;
 
   const [reservationTypeList, setReservationTypeList] = useState([]);
-  fetch('http://localhost:3000/datas/type.json', {
-    method: 'GET',
-  })
-    .then(res => res.json())
-    .then(data => {
-      setReservationTypeList(data);
-    });
+  useEffect(() => {
+    fetch('http://localhost:3000/datas/type.json', {
+      method: 'GET',
+    })
+      .then(res => res.json())
+      .then(data => {
+        setReservationTypeList(data);
+      });
+  }, [setReservationTypeList]);
 
   const [selectType, setSelectType] = useState([false]);
   const handleSelectType = idx => {
@@ -28,6 +36,8 @@ const NextStep = props => {
     }
     setSelectType(newArr);
   };
+  const selectTypeIndex = selectType.indexOf(true);
+  const selectTypeValue = reservationTypeList[selectTypeIndex];
 
   const validation = (name, phone, address) => {
     if (
@@ -43,13 +53,27 @@ const NextStep = props => {
   const valid = validation(name, phone, address);
 
   const success = () => {
-    alert('예약이 완료되었습니다.');
+    alert(
+      name +
+        '님' +
+        ' ' +
+        selectValue +
+        '시' +
+        ' ' +
+        selectTypeValue +
+        ' ' +
+        '예약이 완료되었습니다.'
+    );
     setReservationOpen(false);
   };
 
   return (
     <Container>
       <ContainerBox>
+        <MoveButtonBox>
+          <ArrowLeftOutlined onClick={goPreviousStep} />
+          <CloseOutlined onClick={closeModal} />
+        </MoveButtonBox>
         <ReservationBox>
           <Label>
             <h3>Name</h3>
@@ -129,6 +153,14 @@ const Container = styled.div`
   justify-content: center;
 `;
 const ContainerBox = styled.div``;
+const MoveButtonBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 2px;
+  svg {
+    cursor: pointer;
+  }
+`;
 const ReservationBox = styled.div`
   width: 350px;
   border: 1.5px solid #efefef;
