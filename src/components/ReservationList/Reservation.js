@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { DownOutlined, UpOutlined, CloseOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import NextStep from '../components/Reservation/NextStep';
+import NextStep from '../Reservation/NextStep';
 
-const Reservation = props => {
-  const { setReservationOpen } = props;
-
+const Reservation = ({ setReservationOpen, selectDay, oderDay }) => {
+  const [time, setTime] = useState('시간을 선택해 주세요.');
+  const [timeNumber, setTimeNumber] = useState(null);
   const closeModal = () => {
     setReservationOpen(false);
   };
@@ -18,28 +18,19 @@ const Reservation = props => {
       setSelectTimeOpen(false);
     }
   };
-
-  const [timeList, setTimeList] = useState([]);
-  useEffect(() => {
-    fetch('http://localhost:3000/datas/time.json', {
-      method: 'GET',
-    })
-      .then(res => res.json())
-      .then(data => {
-        setTimeList(data);
-      });
-  }, [setTimeList]);
-
   const [selectTime, setSelectTime] = useState([false]);
   const handleSelectTime = idx => {
-    const newArr = Array(timeList.length).fill(false);
+    const newArr = Array(TIMELISTDATA.length).fill(false);
     if (!selectTime[idx]) {
       newArr[idx] = true;
     }
     setSelectTime(newArr);
+    setTime(TIMELISTDATA[idx]);
+    setTimeNumber('0' + idx);
   };
+
   const selectIndex = selectTime.indexOf(true);
-  const selectValue = timeList[selectIndex];
+  const selectValue = TIMELISTDATA[selectIndex];
 
   const validation = () => {
     if (selectTime.includes(true)) {
@@ -67,21 +58,19 @@ const Reservation = props => {
               <ContentBox>
                 <SelectDate>
                   <h5>날짜</h5>
-                  <span>2022. 10. 14 (금)</span>
+                  <span>{selectDay}</span>
                 </SelectDate>
                 <SelectTime onClick={openTimeButton}>
                   <div>
                     <h5>시간</h5>
-                    <span className={selectTimeOpen && 'inactive'}>
-                      시간을 선택해 주세요.
-                    </span>
+                    <span className={selectTimeOpen && 'inactive'}>{time}</span>
                   </div>
                   {!selectTimeOpen ? <DownOutlined /> : <UpOutlined />}
                 </SelectTime>
                 {selectTimeOpen && (
                   <SelectTimeButtonBox>
                     <div>
-                      {timeList.map((time, i) => {
+                      {TIMELISTDATA.map((time, i) => {
                         return (
                           <button
                             key={i}
@@ -112,6 +101,12 @@ const Reservation = props => {
             setNextStepOpen={setNextStepOpen}
             closeModal={closeModal}
             selectValue={selectValue}
+            //예약시 데이터베이스로 보낼값
+            //날짜, 시간,시간인덱스
+            selectDay={selectDay}
+            timeNumber={timeNumber}
+            time={time}
+            oderDay={oderDay}
           />
         )}
       </ContainerBox>
@@ -124,6 +119,11 @@ export default Reservation;
 const Container = styled.div`
   display: flex;
   justify-content: center;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 const ContainerBox = styled.div`
   padding: 20px;
@@ -231,3 +231,16 @@ const NextButton = styled.button`
     cursor: pointer;
   }
 `;
+
+const TIMELISTDATA = [
+  '09:00',
+  '10:00',
+  '11:00',
+  '12:00',
+  '13:00',
+  '14:00',
+  '15:00',
+  '16:00',
+  '17:00',
+  '18:00',
+];
