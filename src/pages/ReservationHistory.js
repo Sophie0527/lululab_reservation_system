@@ -4,11 +4,6 @@ import { SearchOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
 const ReservationHistory = () => {
-  const [reservationNumberValue, setReservationNumberValue] = useState('');
-  const ChangedInputNumber = e => {
-    setReservationNumberValue(e.target.value);
-  };
-
   const [reservationInfoList, setReservationInfoList] = useState([]);
   const [reservationNum, setReservationNum] = useState('');
   const [showData, setShowData] = useState(false);
@@ -17,11 +12,11 @@ const ReservationHistory = () => {
   const handleOnClick = () => {
     axios
       .get(
-        `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/${reservationNum}.json`
+        `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/${orderUrl}.json`
       )
       .then(res => setReservationInfoList(res.data));
-    if (reservationNumberValue.length > 0) {
-      setReservationNum(reservationNumberValue);
+    if (orderUrl.length > 0) {
+      setReservationNum(orderUrl);
       setShowData(true);
     } else {
       setReservationNum('');
@@ -52,6 +47,7 @@ const ReservationHistory = () => {
       )
       .then(alert('예약이 취소되었습니다.'));
   };
+  const [orderUrl, setOrderUrl] = useState('');
 
   return (
     <Container>
@@ -62,9 +58,11 @@ const ReservationHistory = () => {
             <input
               placeholder="예약 번호를 입력해주세요."
               type="text"
-              value={reservationNumberValue}
-              onChange={ChangedInputNumber}
-              onKeyPress={handleOnKeyPress}
+              value={orderUrl}
+              onChange={e => {
+                setOrderUrl(e.target.value);
+              }}
+              onKeyDown={handleOnKeyPress}
             />
             <SearchOutlined
               type="button"
