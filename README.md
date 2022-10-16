@@ -40,9 +40,11 @@
 ## ⚙ 데이터 관리
 
 - firebase firestorage를 이용하여 데이터 관리  
-  - 전체 데이터: [https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order.json](https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order.json)  
-  - 특정 데이터: [https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/[예약번호].json](https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/20221017_00.json)
-    
+  - 전체 예약 데이터: [https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order.json](https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order.json)  
+  - 특정 예약 데이터: bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/[예약번호].json
+  - 전체 예약 데이터: [https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/blacklist.json](https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/blacklist.json)  
+  - 특정 예약 데이터: bookingclinic-fd4f0-default-rtdb.firebaseio.com/blacklist/[번호].json
+
 <br/>
 <br/>
 
@@ -148,9 +150,104 @@
 
 ### 관리자 페이지
 
-#### 4-1 &nbsp; <br/>
+#### 4-1 &nbsp; 관리자 페이지 접근 조건<br/>
+- #### 관리자 페이지 비밀번호 입력시 확인 가능<br/>
+  onFinish 이벤트 시 비밀번호가 1234 이면 setState 값을 바꿔서 AdminList가 보여지고, 비밀번호가 틀리면 alert창 띄우도록 구현하였습니다.<br/>
+    <details>
+    <summary>Code 더보기</summary><br/>
+      
+     ```js
+      const onFinish = values => {
+        values.password === '1234'
+          ? setOnOff(prev => !prev)
+          : alert('비밀번호를 확인하세요');
+      };
+     ```
+    </details>
   
-#### 4-2 &nbsp; <br/>
+#### 4-2 &nbsp; 관리자페이지의 예약 리스트<br/>
+- #### 예약이 진행중인 모든 예약정보를 보여주는 예약 리스트<br/>
+  예약정보 데이터를 get하여 배열에 담아 예약번호 순서로 보여주기<br/>
+    <details>
+    <summary>Code 더보기</summary><br/>
+      
+     ```js
+      const fakeDataUrl =
+        'https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order.json';
+
+        const [data, setData] = useState([]);
+        const appendData = () => {
+          axios.get(fakeDataUrl).then(res => {
+            setData(Object.values(res.data));
+            message.success(
+              `${Object.values(res.data).length} 개 예약정보가 있습니다.`
+            );
+          });
+     ```
+    </details>
+- #### 관리자가 예약취소가 가능하도록 구현<br/>
+  onClick 이벤트가 있을 시 delete HTTP Method를 사용하여 해당 데이터를 삭제하도록 하였습니다.<br/>
+    <details>
+    <summary>Code 더보기</summary><br/>
+      
+     ```js
+      const delBooking = num => {
+        axios
+          .delete(
+            `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/${num}.json`
+          )
+          .then(alert('삭제 되었습니다.'), appendData());
+      };
+     ```
+    </details>
+  
+#### 4-3 &nbsp; 관리자페이지의 블랙 리스트<br/>
+- #### 블랙 리스트에 있는 고객 정보 리스트<br/>
+  블랙리스트 데이터를 get하여 배열에 담아 전화번호 순서로 보여주기<br/>
+    <details>
+    <summary>Code 더보기</summary><br/>
+      
+     ```js
+      const [data, setData] = useState([]);
+      const appendData = () => {
+        axios.get(fakeDataUrl).then(res => {
+          setData(Object.values(res.data));
+          message.success(
+            `${Object.values(res.data).length} 개 예약정보가 있습니다.`
+          );
+        });
+      };
+     ```
+    </details>
+- #### 관리자가 블랙리스트에 추가하거나 삭제 가능하도록 구현<br/>
+    <details>
+    <summary>Code 더보기</summary><br/>
+      
+     ```js
+      const delBooking = num => {
+        axios
+          .delete(
+            `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/blacklist/${num}.json`
+          )
+          .then(alert('삭제 되었습니다.'), appendData());
+      };
+
+      const addBlackList = () => {
+        axios
+          .put(
+            `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/blacklist/${phone}.json `,
+            { ...addListValue }
+          )
+          .then(
+            setAddListValue({
+              phone: '',
+              reason: '',
+            })
+          )
+          .then(alert('리스트에 추가 하였습니다.'));
+      };
+     ```
+    </details>
 
 <br/>
 <br/>
