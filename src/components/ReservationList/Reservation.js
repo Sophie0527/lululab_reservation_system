@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DownOutlined, UpOutlined, CloseOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import NextStep from '../Reservation/NextStep';
+import NextStep from './NextStep';
 
 const Reservation = ({
   setReservationOpen,
@@ -155,7 +155,7 @@ const MoveButtonBox = styled.div`
   }
 `;
 const ReservationBox = styled.div`
-  width: 350px;
+  min-width: 350px;
   border: 1.5px solid #efefef;
 `;
 const ContentBox = styled.div`
@@ -169,10 +169,10 @@ const SelectDate = styled.div`
   display: flex;
   align-items: center;
   h5 {
-    font-size: 13px;
+    font-size: 15px;
   }
   span {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
     padding: 0 15px;
   }
@@ -189,10 +189,10 @@ const SelectTime = styled.div`
     display: flex;
     align-items: center;
     h5 {
-      font-size: 13px;
+      font-size: 15px;
     }
     span {
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 600;
       padding: 0 15px;
       &.inactive {
@@ -207,6 +207,7 @@ const SelectTimeButtonBox = styled.div`
   padding: 10px 0;
   display: flex;
   align-items: center;
+  justify-content: center;
   div {
     padding: 0 15px;
     display: grid;
@@ -219,8 +220,9 @@ const SelectTimeButtonBox = styled.div`
       margin: 1.5px;
       cursor: pointer;
       font-weight: 500;
-      font-size: 12px;
+      font-size: 14px;
       border-radius: 2px;
+      padding: 10px 25px;
       :hover {
         background-color: #efe1e7;
         color: black;
@@ -234,8 +236,8 @@ const SelectTimeButtonBox = styled.div`
 `;
 const NextButton = styled.button`
   margin-top: 15px;
-  padding: 10px 0;
-  width: 350px;
+  padding: 20px 5px;
+  width: 100%;
   border: none;
   background-color: #efefef;
   color: #8e8e8e;
