@@ -124,6 +124,10 @@ const ContainerBox = styled.div`
   background-color: white;
   border-radius: 5px;
   box-shadow: 2px 2px 3px 2px #dadada;
+  @media (max-width: 530px) {
+    width: 250px;
+    padding: 0px;
+  }
 `;
 const SearchContainer = styled.div`
   background-color: #da005c;
