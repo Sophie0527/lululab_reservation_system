@@ -5,6 +5,7 @@ import ReservationHistory from './ReservationHistory';
 import styled from 'styled-components';
 import 'antd/dist/antd.css';
 import { CalendarOutlined, HistoryOutlined } from '@ant-design/icons';
+import Admin from './Admin';
 
 const { Header, Content, Footer } = Layout;
 function getItem(label, key, icon, children, type) {
@@ -20,6 +21,7 @@ function getItem(label, key, icon, children, type) {
 const items = [
   getItem('예약하기', '1', <CalendarOutlined />),
   getItem('예약조회', '2', <HistoryOutlined />),
+  getItem('관리자', '3', <HistoryOutlined />),
 ];
 
 const MainLayout = () => {
@@ -56,12 +58,15 @@ const MainLayout = () => {
         >
           <Breadcrumb.Item>룰루랩 예약 시스템</Breadcrumb.Item>
           <Breadcrumb.Item>
-            {page === '1' ? 'Reservation' : 'Reservation History'}
+            {page === '1' && 'Reservation'}
+            {page === '2' && 'Reservation History'}
+            {page === '3' && 'Admin'}
           </Breadcrumb.Item>
         </Breadcrumb>
         <div className="site-layout-content">
           {page === '1' && <ReservationList />}
           {page === '2' && <ReservationHistory />}
+          {page === '3' && <Admin />}
         </div>
       </Content>
       <Footer

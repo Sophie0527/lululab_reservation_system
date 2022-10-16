@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowLeftOutlined, CloseOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -15,6 +15,7 @@ const NextStep = ({
   const goPreviousStep = () => {
     setNextStepOpen(false);
   };
+
   const [reservationValue, setReservationValue] = useState({
     order_number: `${oderDay}_${timeNumber}`,
     time: time,
@@ -29,7 +30,7 @@ const NextStep = ({
   const [selectType, setSelectType] = useState([false]);
   const selectTypeIndex = selectType.indexOf(true);
   const selectTypeValue = TYPELISTDATA[selectTypeIndex];
-
+  const [blackList, setBlackList] = useState([]);
   const handleSelectType = idx => {
     const newArr = Array(TYPELISTDATA.length).fill(false);
     if (!selectType[idx]) {
@@ -59,6 +60,11 @@ const NextStep = ({
     window.location.reload();
   };
 
+  const blackAlert = () => {
+    alert(`${name}님은 병원 사정으로 방문 예약만 가능 하십니다.`);
+    window.location.reload();
+  };
+
   const goOrder = () => {
     axios
       .put(
@@ -73,6 +79,16 @@ const NextStep = ({
       )
       .then(success());
   };
+  useEffect(() => {
+    axios
+      .get(
+        'https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/blacklist.json'
+      )
+      .then(res => {
+        setBlackList(Object.keys(res.data));
+      });
+  }, []);
+  console.log(blackList);
 
   return (
     <Container>
@@ -147,15 +163,27 @@ const NextStep = ({
             </div>
           </Label>
         </ReservationBox>
-        <ReservationButton
-          className={valid && 'active'}
-          disabled={!valid}
-          onClick={() => {
-            goOrder();
-          }}
-        >
-          예약하기
-        </ReservationButton>
+        {blackList.indexOf(phone) !== -1 ? (
+          <ReservationButton
+            className={valid && 'active'}
+            disabled={!valid}
+            onClick={() => {
+              blackAlert();
+            }}
+          >
+            예약하기
+          </ReservationButton>
+        ) : (
+          <ReservationButton
+            className={valid && 'active'}
+            disabled={!valid}
+            onClick={() => {
+              goOrder();
+            }}
+          >
+            예약하기
+          </ReservationButton>
+        )}
       </ContainerBox>
     </Container>
   );
