@@ -1,11 +1,11 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { addDays, getDay } from 'date-fns/esm';
 import { ko } from 'date-fns/locale';
-import './customStyle.css';
 import moment from 'moment/moment';
 import 'moment/locale/ko';
-import { addDays, getDay } from 'date-fns/esm';
+import 'react-datepicker/dist/react-datepicker.css';
+import './customStyle.scss';
 
 const Calendar = ({ openReservation, setSelectDay, setOrderDay }) => {
   const today = new Date();

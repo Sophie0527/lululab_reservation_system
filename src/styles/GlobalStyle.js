@@ -39,7 +39,21 @@ const GlobalStyle = createGlobalStyle`
   margin: 16px 0 16px 24px;
 }
 
+.ant-layout main.ant-layout-content{
+  padding:0 50px;
+  @media (max-width: 650px) {
+    padding:0 10px;
+    
   }
+}
+
+.site-layout-content {
+  @media (max-width: 400px) {
+    padding:0px;
+    
+  }
+  }
+  
 `;
 
 export default GlobalStyle;

@@ -199,32 +199,38 @@ const MoveButtonBox = styled.div`
   display: flex;
   justify-content: space-between;
   padding-bottom: 2px;
+
   svg {
     cursor: pointer;
   }
 `;
+
 const ReservationBox = styled.div`
   min-width: 350px;
   border: 1.5px solid #efefef;
   padding: 10px 20px;
 `;
+
 const Label = styled.label`
   display: flex;
   flex-direction: column;
   margin: 15px 0;
+
   h3 {
     margin: 0 0 4px;
+    color: black;
     font-size: 14px;
     line-height: 20px;
-    color: black;
     font-weight: 700;
   }
+
   input {
     border: 1.5px solid #b3b3b3;
     padding: 10px 8px;
     border-radius: 4px;
     font-size: 13px;
   }
+
   div {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -232,6 +238,7 @@ const Label = styled.label`
     background-color: #efefef;
     padding: 10px 12px;
     border-radius: 4px;
+
     button {
       border: 1px solid #dadada;
       background-color: #f8f8f8;
@@ -242,6 +249,7 @@ const Label = styled.label`
       font-weight: 500;
       font-size: 12px;
       border-radius: 2px;
+
       &.active {
         background-color: #efe1e7;
         color: black;
@@ -249,6 +257,7 @@ const Label = styled.label`
     }
   }
 `;
+
 const ReservationButton = styled.button`
   margin-top: 15px;
   padding: 20px 5px;
@@ -257,6 +266,7 @@ const ReservationButton = styled.button`
   border: none;
   background-color: #efefef;
   color: #8e8e8e;
+
   &.active {
     background-color: #da005c;
     color: white;

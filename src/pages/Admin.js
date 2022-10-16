@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-
+import AdminList from '../components/Admin/AdminList';
 import FormBox from '../components/Admin/FormBox';
 import 'antd/dist/antd.css';
-import AdminList from '../components/Admin/AdminList';
 
 const Admin = () => {
   const [onOff, setOnOff] = useState(true);

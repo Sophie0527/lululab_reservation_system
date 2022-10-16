@@ -11,12 +11,11 @@ const Reservation = ({
 }) => {
   const [time, setTime] = useState('시간을 선택해 주세요.');
   const [timeNumber, setTimeNumber] = useState(null);
-
+  const [selectTimeOpen, setSelectTimeOpen] = useState(false);
   const closeModal = () => {
     setReservationOpen(false);
   };
 
-  const [selectTimeOpen, setSelectTimeOpen] = useState(false);
   const openTimeButton = () => {
     if (!selectTimeOpen) {
       setSelectTimeOpen(true);
@@ -128,12 +127,12 @@ export default Reservation;
 const Container = styled.div`
   display: flex;
   justify-content: center;
-
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 `;
+
 const ContainerBox = styled.div`
   padding: 20px;
   margin-top: 50px;
@@ -141,22 +140,31 @@ const ContainerBox = styled.div`
   border-radius: 5px;
   box-shadow: 2px 2px 3px 2px #dadada;
 `;
+
 const MoveButtonBox = styled.div`
   display: flex;
   justify-content: right;
   padding-bottom: 2px;
+
   svg {
     cursor: pointer;
   }
 `;
+
 const ReservationBox = styled.div`
   min-width: 350px;
   border: 1.5px solid #efefef;
+
+  @media (max-width: 450px) {
+    min-width: 280px;
+  }
 `;
+
 const ContentBox = styled.div`
   padding: 15px;
   color: #2b2b2b;
 `;
+
 const SelectDate = styled.div`
   border-bottom: 1.5px solid #ededed;
   padding: 10px 0;
@@ -172,6 +180,7 @@ const SelectDate = styled.div`
     padding: 0 15px;
   }
 `;
+
 const SelectTime = styled.div`
   border-bottom: 1.5px solid #ededed;
   padding: 10px 0;
@@ -197,6 +206,7 @@ const SelectTime = styled.div`
     }
   }
 `;
+
 const SelectTimeButtonBox = styled.div`
   border-bottom: 1.5px solid #ededed;
   padding: 10px 0;
@@ -211,17 +221,22 @@ const SelectTimeButtonBox = styled.div`
       border: 1px solid #dadada;
       background-color: #f8f8f8;
       color: #b3b3b3;
-      padding: 5px 15px;
       margin: 1.5px;
       cursor: pointer;
       font-weight: 500;
       font-size: 14px;
       border-radius: 2px;
       padding: 10px 25px;
+
+      @media (max-width: 450px) {
+        padding: 5px 10px;
+      }
+
       :hover {
         background-color: #efe1e7;
         color: black;
       }
+
       &.active {
         background-color: #efe1e7;
         color: black;
@@ -229,6 +244,7 @@ const SelectTimeButtonBox = styled.div`
     }
   }
 `;
+
 const NextButton = styled.button`
   margin-top: 15px;
   padding: 20px 5px;
@@ -236,6 +252,7 @@ const NextButton = styled.button`
   border: none;
   background-color: #efefef;
   color: #8e8e8e;
+
   &.active {
     background-color: #da005c;
     color: white;

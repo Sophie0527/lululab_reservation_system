@@ -36,12 +36,19 @@
 .react-datepicker__day,
 .datepicker__day,
 .react-datepicker__day-name {
-  width: 4.2rem;
   font-weight: 400;
   font-size: 16px;
   width: 4.2rem;
   line-height: 40px;
   padding-bottom: 15px;
+  @media (max-width: 650px) {
+    width: 3.2rem;
+    padding-bottom: 10px;
+  }
+  @media (max-width: 500px) {
+    width: 2.5rem;
+    padding-bottom: 10px;
+  }
 }
 .react-datepicker__day:hover {
   background-color: #da005c;

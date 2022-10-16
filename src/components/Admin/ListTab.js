@@ -10,6 +10,7 @@ const ContainerHeight = 400;
 
 const ListTab = () => {
   const [data, setData] = useState([]);
+  const [reset, setReset] = useState(true);
   const appendData = () => {
     axios.get(fakeDataUrl).then(res => {
       setData(Object.values(res.data));
@@ -18,10 +19,10 @@ const ListTab = () => {
       );
     });
   };
-  console.log(data);
+
   useEffect(() => {
     appendData();
-  }, [setData]);
+  }, [setData, reset, setReset]);
 
   const onScroll = e => {
     if (
@@ -37,7 +38,15 @@ const ListTab = () => {
       .delete(
         `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/${num}.json`
       )
-      .then(alert('삭제 되었습니다.'), appendData());
+      .then(
+        axios.delete(
+          `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order_list/${num}.json`
+        )
+      )
+      .then(
+        alert('삭제 되었습니다.'),
+        setReset(prev => !prev)
+      );
   };
   return (
     <List>
