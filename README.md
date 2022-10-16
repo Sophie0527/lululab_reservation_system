@@ -25,7 +25,7 @@
 - 진행기간 : 10/14~ 10/17
 - 과제주관 : 룰루랩
 - 참여명단 : 정억화, 손소희
-- 배포 : [배포 바로가기]()
+- 배포 : [배포 바로가기](https://radiant-sorbet-8b2697.netlify.app/)
 
 <br/>
 <br/>
@@ -53,11 +53,43 @@
 > MISSION 1
 
 ### 병원 예약 가능 목록 페이지
+: 예약 가능 여부는 Calendar에서 날짜 선택 시 예약등록 모달에서 시간대 별로 확인 가능합니다.
 
-#### 1-1 &nbsp; <br/>
+#### 1-1 &nbsp; 예약 페이지로 이동하기위해 Calendar를 활용<br/>
+- #### Calendar에서 날짜를 선택할 수 있도록 구현<br/>
+  `react-datepicker` 라이브러리를 사용하여 Calendar 구현하였습니다.<br/>
   
-#### 1-2 &nbsp; <br/>
-
+- #### 해당 날짜 선택 시 예약 등록 모달 open<br/>
+  onChange 이벤트 시 state값을 true를 변경하여 예약 등록 모달이 보여지도록 구현하였습니다.<br/>
+    <details>
+    <summary>Code 더보기</summary><br/>
+      
+     ```js
+       const [reservationOpen, setReservationOpen] = useState(false);
+       const openReservation = () => {
+          setReservationOpen(prev => !prev);
+        };
+        
+        ...
+        
+          <DatePicker
+          monthsShown={1}
+          minDate={today}
+          locale={ko}
+          disabledKeyboardNavigation
+          inline
+          dateFormat="YY/MM/DD"
+          filterDate={isWeekday}
+          maxDate={addDays(today, 60)}
+          onChange={e => {
+            setSelectDay(moment(e).format('YY/MM/DD (ddd)'));
+            setOrderDay(moment(e).format('YYYYMMDD'));
+            openReservation();
+          }}
+          />
+     ```
+    </details>
+    
 <br/>
 <br/>
 
