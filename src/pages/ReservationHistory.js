@@ -18,28 +18,13 @@ const ReservationHistory = () => {
     }
   };
 
-  const [typeData, setTypeData] = useState();
-  const changeTypeInfo = () => {
-    const typeNum = reservationInfoList.type;
-    if (typeNum === 1) {
-      setTypeData('진료');
-    } else if (typeNum === 2) {
-      setTypeData('검진');
-    } else if (typeNum === 3) {
-      setTypeData('관리');
-    } else if (typeNum === 4) {
-      setTypeData('처방');
-    }
-  };
-
   const handleOnClick = () => {
     axios
       .get(
         `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/${orderUrl}.json`
       )
       .then(res => setReservationInfoList(res.data))
-      .then(showUserInfo())
-      .then(changeTypeInfo());
+      .then(showUserInfo());
   };
 
   const handleOnKeyPress = e => {
@@ -114,7 +99,7 @@ const ReservationHistory = () => {
                 </div>
                 <div>
                   <h5>예약종류</h5>
-                  <span>{typeData}</span>
+                  <span>{reservationInfoList.type}</span>
                 </div>
               </InfoContent>
               <InfoFooter>
