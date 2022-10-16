@@ -40,10 +40,10 @@
 ## ⚙ 데이터 관리
 
 - firebase firestorage를 이용하여 데이터 관리  
-  - 전체 예약 데이터: [https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order.json](https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order.json)  
-  - 특정 예약 데이터: bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/[예약번호].json
-  - 전체 예약 데이터: [https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/blacklist.json](https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/blacklist.json)  
-  - 특정 예약 데이터: bookingclinic-fd4f0-default-rtdb.firebaseio.com/blacklist/[번호].json
+  - 전체 예약 API : [https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order.json](https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order.json)  
+  - 특정 예약 API : bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/[예약번호].json
+  - 전체 블랙리스트 API : [https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/blacklist.json](https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/blacklist.json)  
+  - 특정 블랙리스트 API : bookingclinic-fd4f0-default-rtdb.firebaseio.com/blacklist/[번호].json
 
 <br/>
 <br/>
