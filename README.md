@@ -1,18 +1,22 @@
-<img src="https://img.shields.io/badge/Javascript-ffc700?style=flat-square&logo=Javascript&logoColor=white"/> <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=black"/> <img src="https://img.shields.io/badge/styled components-DB7093?style=flat-square&logo=styled-components&logoColor=white"/>
-
 # lululab Reservation System Project
 
 ## 🔍 미리보기
 
-> Reservation List Page
+> 예약하기
 
-&nbsp; &nbsp; &nbsp;<img src=""  width="600" height="450"/>
+&nbsp; &nbsp; &nbsp;<img src="https://user-images.githubusercontent.com/100933263/196032854-6ca37684-d29a-4123-afcb-765a7378f384.gif"  width="600" height="530"/>
 <br/>
 <br/>
 
-> Reservation History Page
+> 예약조회
 
-&nbsp; &nbsp; &nbsp;<img src="https://user-images.githubusercontent.com/100933263/196029201-9b05b420-fa6b-4bdc-a1b5-b3621c2d975e.gif"  width="600" height="450"/>
+&nbsp; &nbsp; &nbsp;<img src="https://user-images.githubusercontent.com/100933263/196032267-ee3893cc-f86b-4270-8685-09b5987ca590.gif"  width="600" height="450"/>
+<br/>
+<br/>
+
+> 관리자
+
+&nbsp; &nbsp; &nbsp;<img src="https://user-images.githubusercontent.com/100933263/196031915-62e9d10f-61c8-43f4-a095-0ee5f443ab2c.gif"  width="600" height="550"/>
 <br/>
 <br/>
 
@@ -70,10 +74,73 @@
 
 ### 예약 내역 조회 페이지
 
-#### 3-1 &nbsp; <br/>
+#### 3-1 &nbsp; 예약 번호로 예약 내역 조회<br/>
+- #### 버튼 클릭 또는 enter 시 내역 조회 <br/>
+  onClick 이벤트가 있을 시 get HTTP Method를 사용하여 해당 데이터를 불러오도록 하였습니다.<br/>
+    <details>
+    <summary>Code 더보기</summary><br/>
+      
+     ```js
+       const handleOnClick = () => {
+         axios
+           .get(
+             `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/${orderUrl}.json`
+           )
+           .then(res => setReservationInfoList(res.data))
+           .then(showUserInfo());
+        };
+     ```
+    </details>
+- #### state를 사용하여 url 변경하여 해당 데이터 가져오기<br/>
+  input의 value를 받아 onchange 이멘트 시 url을 변경하여 해당 예약정보를 보여주도록 하였습니다.<br/>
+    <details>
+    <summary>Code 더보기</summary><br/>
+      
+     ```js
+        <input
+          placeholder="예약 번호를 입력해주세요."
+          type="text"
+          value={orderUrl}
+          onChange={e => {
+            setOrderUrl(e.target.value);
+          }}
+          onKeyDown={handleOnKeyPress}
+        />
+        <SearchOutlined type="button" value="search" onClick={handleOnClick} />
+     ```
+    </details>
+- #### 검색한 예약번호가 없을 때 조건<br/>
+  데이터에서 해당 입력된 값이 null 일 때 '예약을 조회할 수 없습니다.'가 보여질 수 있는 조건을 추가하였습니다.<br/>
+    <details>
+    <summary>Code 더보기</summary><br/>
+      
+     ```js
+      {reservationInfoList === null && showData && (
+        <InfoHeader>
+          <h5>예약을 조회할 수 없습니다.</h5>
+        </InfoHeader>
+      )}
+     ```
+    </details>
   
-#### 3-2 &nbsp; <br/>
-
+#### 3-2 &nbsp; 예약취소가 가능하도록 구현 <br/>
+- #### 예약취소 버튼 클릭 시 예약취소 <br/>
+  onClick 이벤트가 있을 시 delete HTTP Method를 사용하여 해당 데이터를 삭제하도록 하였습니다.<br/>
+    <details>
+    <summary>Code 더보기</summary><br/>
+      
+     ```js
+      const deleteOnClick = () => {
+        axios
+         .delete(
+            `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/${orderUrl}.json`
+         )
+         .then(alert('예약이 취소되었습니다.'));
+       window.location.reload();
+       };
+     ```
+    </details>
+  
 <br/>
 <br/>
 
@@ -81,9 +148,9 @@
 
 ### 관리자 페이지
 
-#### 3-1 &nbsp; <br/>
+#### 4-1 &nbsp; <br/>
   
-#### 3-2 &nbsp; <br/>
+#### 4-2 &nbsp; <br/>
 
 <br/>
 <br/>
