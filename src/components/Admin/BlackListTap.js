@@ -17,7 +17,7 @@ const BlackListTop = () => {
     phone: '',
     reason: '',
   });
-  const { phone, reason } = addListValue;
+  const { phone } = addListValue;
 
   const appendData = () => {
     axios.get(fakeDataUrl).then(res => {
@@ -65,7 +65,7 @@ const BlackListTop = () => {
   };
   return (
     <>
-      <List>
+      <List key={phone}>
         <VirtualList
           data={data}
           height={ContainerHeight}
@@ -74,7 +74,7 @@ const BlackListTop = () => {
           onScroll={onScroll}
         >
           {item => (
-            <List.Item key={item.phone}>
+            <List.Item key={'black' + item.phone}>
               <List.Item.Meta
                 avatar={
                   <Avatar

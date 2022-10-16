@@ -26,6 +26,7 @@ const Addblack = ({
       />
       <select
         name="reason"
+        defaultValue="노쇼 다수"
         onChange={e => {
           handleLoginInput(e);
         }}

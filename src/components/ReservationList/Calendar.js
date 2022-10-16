@@ -9,10 +9,13 @@ import { addDays, getDay } from 'date-fns/esm';
 
 const Calendar = ({ openReservation, setSelectDay, setOrderDay }) => {
   const today = new Date();
+
   const isWeekday = date => {
     const day = getDay(date);
+
     return day !== 0;
   };
+
   return (
     <DatePicker
       monthsShown={1}
