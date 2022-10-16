@@ -25,7 +25,7 @@
 - 진행기간 : 10/14~ 10/17
 - 과제주관 : 룰루랩
 - 참여명단 : 정억화, 손소희
-- 배포 : [배포 바로가기](https://radiant-sorbet-8b2697.netlify.app/)
+- 배포 : [배포 바로가기](https://team13-lululab.netlify.app/)
 
 <br/>
 <br/>
