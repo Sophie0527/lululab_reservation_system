@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import ReservationList from './ReservationList';
 import ReservationHistory from './ReservationHistory';
 import Admin from './Admin';
@@ -47,11 +46,7 @@ const MainLayout = () => {
           onClick={onClick}
         />
       </Header>
-      <Content
-        style={{
-          padding: '0 50px',
-        }}
-      >
+      <Content>
         <Breadcrumb
           style={{
             margin: '16px 0',
