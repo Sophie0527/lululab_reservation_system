@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import Calendar from '../components/ReservationList/Calendar';
-import '../components/ReservationList/Calendar';
 import Reservation from '../components/ReservationList/Reservation';
-import axios from 'axios';
+import { getListApi } from '../api/api';
+import styled from 'styled-components';
+import '../components/ReservationList/Calendar';
 
 const ReservationList = () => {
   const [reservationOpen, setReservationOpen] = useState(false);
@@ -43,15 +43,16 @@ const ReservationList = () => {
     }
     return setResult(TIMELISTDATA);
   };
-
-  useEffect(() => {
-    axios
-      .get(
-        'https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order_list.json'
-      )
-      .then(res => setNewList(Object.keys(res.data)));
+  const fetchData = () => {
+    getListApi()
+      .then(res => setNewList(Object.keys(res.data)))
+      .catch(e => {});
     check();
     remove();
+  };
+
+  useEffect(() => {
+    fetchData();
   }, [selectDay]);
 
   return (

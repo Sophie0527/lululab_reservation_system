@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Breadcrumb, Layout, Menu } from 'antd';
+
 import ReservationList from './ReservationList';
 import ReservationHistory from './ReservationHistory';
+import Admin from './Admin';
+import { Breadcrumb, Layout, Menu } from 'antd';
+import { CalendarOutlined, HistoryOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import 'antd/dist/antd.css';
-import { CalendarOutlined, HistoryOutlined } from '@ant-design/icons';
-import Admin from './Admin';
 
 const { Header, Content, Footer } = Layout;
 function getItem(label, key, icon, children, type) {

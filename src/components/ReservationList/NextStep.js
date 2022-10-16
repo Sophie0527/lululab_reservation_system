@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ArrowLeftOutlined, CloseOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import axios from 'axios';
-
+import { getBlackListApi } from '../../api/api';
 const NextStep = ({
   setReservationOpen,
   setNextStepOpen,
@@ -79,16 +79,15 @@ const NextStep = ({
       )
       .then(success());
   };
+
+  const fetchData = () => {
+    getBlackListApi().then(res => {
+      setBlackList(Object.keys(res.data));
+    });
+  };
   useEffect(() => {
-    axios
-      .get(
-        'https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/blacklist.json'
-      )
-      .then(res => {
-        setBlackList(Object.keys(res.data));
-      });
+    fetchData();
   }, []);
-  console.log(blackList);
 
   return (
     <Container>

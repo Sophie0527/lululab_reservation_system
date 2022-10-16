@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import NextStep from './NextStep';
 import { DownOutlined, UpOutlined, CloseOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import NextStep from './NextStep';
 
 const Reservation = ({
   setReservationOpen,
@@ -51,11 +51,6 @@ const Reservation = ({
 
   const openNextStep = () => {
     setNextStepOpen(true);
-  };
-  const btnStyle = {
-    color: 'red',
-    border: '1px solid red',
-    backgroundColor: 'rgba(255,0,0,0.2)',
   };
 
   return (
@@ -247,3 +242,9 @@ const NextButton = styled.button`
     cursor: pointer;
   }
 `;
+
+const btnStyle = {
+  color: 'red',
+  border: '1px solid red',
+  backgroundColor: 'rgba(255,0,0,0.2)',
+};

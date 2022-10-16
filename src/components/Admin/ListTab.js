@@ -49,7 +49,7 @@ const ListTab = () => {
         onScroll={onScroll}
       >
         {item => (
-          <List.Item key={item.order_number}>
+          <List.Item key={'list' + item.order_number}>
             <List.Item.Meta
               avatar={<Avatar>{item.type}</Avatar>}
               title={`${item.name}님 (예약번호: ${item.order_number})`}
