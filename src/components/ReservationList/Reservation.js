@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { DownOutlined, UpOutlined, CloseOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import NextStep from '../Reservation/NextStep';
@@ -24,6 +24,7 @@ const Reservation = ({
       setSelectTimeOpen(false);
     }
   };
+
   const [selectTime, setSelectTime] = useState([false]);
   const handleSelectTime = idx => {
     const newArr = Array(TIMELISTDATA.length).fill(false);

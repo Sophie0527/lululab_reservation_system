@@ -12,7 +12,6 @@ const ReservationList = () => {
   const [newList, setNewList] = useState({});
   const [result, setResult] = useState([]);
   const newArr = [];
-  const nwww = [];
 
   const openReservation = () => {
     setReservationOpen(prev => !prev);
@@ -23,7 +22,6 @@ const ReservationList = () => {
       newList[i].includes(oderDay) &&
         newArr.push(Number(newList[i].substr(-2)));
     }
-
     return newArr;
   };
 

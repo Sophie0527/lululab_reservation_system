@@ -7,7 +7,6 @@ const NextStep = ({
   setReservationOpen,
   setNextStepOpen,
   closeModal,
-  selectValue,
   selectDay,
   timeNumber,
   time,
@@ -16,11 +15,8 @@ const NextStep = ({
   const goPreviousStep = () => {
     setNextStepOpen(false);
   };
-
-  const [typeNumber, setTypeNumber] = useState(null);
-
   const [reservationValue, setReservationValue] = useState({
-    order_number: oderDay + '_' + timeNumber,
+    order_number: `${oderDay}_${timeNumber}`,
     time: time,
     day: selectDay,
     name: '',
@@ -31,6 +27,9 @@ const NextStep = ({
 
   const { name, phone, address } = reservationValue;
   const [selectType, setSelectType] = useState([false]);
+  const selectTypeIndex = selectType.indexOf(true);
+  const selectTypeValue = TYPELISTDATA[selectTypeIndex];
+
   const handleSelectType = idx => {
     const newArr = Array(TYPELISTDATA.length).fill(false);
     if (!selectType[idx]) {
@@ -38,8 +37,6 @@ const NextStep = ({
     }
     setSelectType(newArr);
   };
-  const selectTypeIndex = selectType.indexOf(true);
-  const selectTypeValue = TYPELISTDATA[selectTypeIndex];
 
   const validation = (name, phone, address) => {
     if (
