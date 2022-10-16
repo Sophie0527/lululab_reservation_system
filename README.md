@@ -97,9 +97,118 @@
 
 ### 예약 등록 페이지
 
-#### 2-1 &nbsp; <br/>
+#### 2-1 &nbsp; 예약 시간 조회 및 선택<br/>
+- #### 예약 시간 선택<br/>
+  예약 시간 선택 시 해당 시간 버튼 색 변경 및 '시간을 선택해주세요' text 해당 시간으로 변경됩니다.<br/>
+    <details>
+    <summary>Code 더보기</summary><br/>
+      
+     ```js
+      const handleSelectTime = idx => {
+        const newArr = Array(TIMELISTDATA.length).fill(false);
+        if (!selectTime[idx]) {
+          newArr[idx] = true;
+        }
+        setSelectTime(newArr);
+        setTime(TIMELISTDATA[idx]);
+        setTimeNumber('0' + idx);
+      };
+     ```
+    </details>
+- #### 다음단계 버튼 활성화<br/>
+  시간 버튼 클릭 시 다음단계 버튼이 활성화되고, 다음 모달이 open 되고 현재 모달이 닫히도록 구현하였습니다.<br/>
+    <details>
+    <summary>Code 더보기</summary><br/>
+      
+     ```js
+      const validation = () => {
+        if (selectTime.includes(true)) {
+          return true;
+        }
+        return false;
+      };
+      const valid = validation();
+      
+      ...
+      
+        <NextButton
+          className={valid && 'active'}
+          disabled={!valid}
+          onClick={openNextStep}
+        >
+          다음단계
+        </NextButton>
+     ```
+    </details>
   
-#### 2-2 &nbsp; <br/>
+#### 2-2 &nbsp; 예약자 정보 입력<br/>
+- #### 입력값에 따라 객체 값 변경하기<br/>
+  input 값의 value에 따라 onChange 이벤트로 값 변경되도록 구현하였습니다.<br/>
+    <details>
+    <summary>Code 더보기</summary><br/>
+      
+     ```js
+      const [reservationValue, setReservationValue] = useState({
+        order_number: `${oderDay}_${timeNumber}`,
+        time: time,
+        day: selectDay,
+        name: '',
+        phone: '',
+        address: '',
+        type: '',
+      });
+
+      const { name, phone, address } = reservationValue;
+      
+      ...
+      
+       <input
+         placeholder="ex. 홍길동"
+         type="text"
+         value={name}
+         onChange={e => {
+           setReservationValue({
+             ...reservationValue,
+             name: e.target.value,
+           });
+         }}
+       />
+     ```
+    </details>
+- #### 예약하기 버튼 클릭 시 입력 데이터 보내 추가하기<br/>
+  onClick 이벤트 시 put HTTP Method를 사용하여 입력한 데이터 보내도록 구현하였습니다.<br/>
+    <details>
+    <summary>Code 더보기</summary><br/>
+      
+     ```js
+      const goOrder = () => {
+        axios
+          .put(
+            `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/${oderDay}_${timeNumber}.json`,
+            { ...reservationValue }
+          )
+          .then(
+            axios.put(
+              `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order_list/${oderDay}_${timeNumber}.json`,
+              { order: `${oderDay}_${timeNumber}` }
+            )
+          )
+          .then(success());
+      };
+     ```
+    </details>
+- #### 블랙리스트 예약자일 경우 예약 불가<br/>
+  블랙리스트 일 경우 alert창(방문예약만 가능합니다') 띄우기<br/>
+    <details>
+    <summary>Code 더보기</summary><br/>
+      
+     ```js
+  const blackAlert = () => {
+    alert(`${name}님은 병원 사정으로 방문 예약만 가능 하십니다.`);
+    window.location.reload();
+  };
+     ```
+    </details>
 
 <br/>
 <br/>
