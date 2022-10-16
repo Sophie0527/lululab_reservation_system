@@ -5,23 +5,21 @@ import axios from 'axios';
 
 const ReservationHistory = () => {
   const [reservationInfoList, setReservationInfoList] = useState([]);
-  const [reservationNum, setReservationNum] = useState('');
-  const [showData, setShowData] = useState(false);
-  const [typeData, setTypeData] = useState();
+  const [orderUrl, setOrderUrl] = useState('');
 
-  const handleOnClick = () => {
-    axios
-      .get(
-        `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/${orderUrl}.json`
-      )
-      .then(res => setReservationInfoList(res.data));
-    if (orderUrl.length > 0) {
-      setReservationNum(orderUrl);
-      setShowData(true);
-    } else {
-      setReservationNum('');
+  const [showData, setShowData] = useState(false);
+  const showUserInfo = () => {
+    if (orderUrl.length < 1) {
       setShowData(false);
+      setOrderUrl('');
+    } else if (orderUrl.length > 0) {
+      setOrderUrl(orderUrl);
+      setShowData(true);
     }
+  };
+
+  const [typeData, setTypeData] = useState();
+  const changeTypeInfo = () => {
     const typeNum = reservationInfoList.type;
     if (typeNum === 1) {
       setTypeData('진료');
@@ -34,6 +32,16 @@ const ReservationHistory = () => {
     }
   };
 
+  const handleOnClick = () => {
+    axios
+      .get(
+        `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/${orderUrl}.json`
+      )
+      .then(res => setReservationInfoList(res.data))
+      .then(showUserInfo())
+      .then(changeTypeInfo());
+  };
+
   const handleOnKeyPress = e => {
     if (e.key === 'Enter') {
       handleOnClick();
@@ -43,11 +51,11 @@ const ReservationHistory = () => {
   const deleteOnClick = () => {
     axios
       .delete(
-        `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/${reservationNum}.json`
+        `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/${orderUrl}.json`
       )
       .then(alert('예약이 취소되었습니다.'));
+    window.location.reload();
   };
-  const [orderUrl, setOrderUrl] = useState('');
 
   return (
     <Container>
