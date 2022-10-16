@@ -26,6 +26,7 @@ const NextStep = ({
     name: '',
     phone: '',
     address: '',
+    type: '',
   });
 
   const { name, phone, address } = reservationValue;
@@ -61,22 +62,16 @@ const NextStep = ({
     window.location.reload();
   };
 
-  const goOrder = index => {
+  const goOrder = () => {
     axios
       .put(
-        'https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/' +
-          oderDay +
-          '_' +
-          timeNumber +
-          '.json',
+        `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/${oderDay}_${timeNumber}.json`,
         { ...reservationValue }
       )
       .then(
         axios.put(
-          `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order_list/${
-            oderDay + '_' + timeNumber
-          }.json`,
-          { order: oderDay + '_' + timeNumber }
+          `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order_list/${oderDay}_${timeNumber}.json`,
+          { order: `${oderDay}_${timeNumber}` }
         )
       )
       .then(success());
@@ -143,7 +138,7 @@ const NextStep = ({
                       handleSelectType(i);
                       setReservationValue({
                         ...reservationValue,
-                        type: i + 1,
+                        type: type,
                       });
                     }}
                     className={selectType[i] && 'active'}
