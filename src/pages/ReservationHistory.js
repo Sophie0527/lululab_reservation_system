@@ -1,28 +1,31 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { SearchOutlined } from '@ant-design/icons';
 import axios from 'axios';
+import SearchBar from '../components/ReservationHistory/SearchBar';
+import ReservationHistoryInfo from '../components/ReservationHistory/ReservationHistoryInfo';
 
 const ReservationHistory = () => {
   const [reservationInfoList, setReservationInfoList] = useState([]);
-  const [reservationNum, setReservationNum] = useState('');
+  const [orderUrl, setOrderUrl] = useState('');
   const [showData, setShowData] = useState(false);
+
+  const showUserInfo = () => {
+    if (orderUrl.length < 1) {
+      setShowData(false);
+      setOrderUrl('');
+    } else if (orderUrl.length > 0) {
+      setOrderUrl(orderUrl);
+      setShowData(true);
+    }
+  };
 
   const handleOnClick = () => {
     axios
       .get(
         `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/${orderUrl}.json`
       )
-      .then(res => {
-        setReservationInfoList(res.data);
-      });
-    if (orderUrl.length > 0) {
-      setReservationNum(orderUrl);
-      setShowData(true);
-    } else {
-      setReservationNum('');
-      setShowData(false);
-    }
+      .then(res => setReservationInfoList(res.data))
+      .then(showUserInfo());
   };
 
   const handleOnKeyPress = e => {
@@ -31,89 +34,20 @@ const ReservationHistory = () => {
     }
   };
 
-  const deleteOnClick = () => {
-    axios
-      .delete(
-        `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/${reservationNum}.json`
-      )
-      .then(
-        axios.delete(
-          `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order_list/${reservationNum}.json`
-        )
-      )
-      .then(() => {
-        alert('예약이 취소되었습니다.');
-        window.location.reload();
-      });
-  };
-  const [orderUrl, setOrderUrl] = useState('');
-
   return (
     <Container>
       <ContainerBox>
-        <SearchContainer>
-          <h2>예약조회</h2>
-          <SearchBox>
-            <input
-              placeholder="예약 번호를 입력해주세요."
-              type="text"
-              value={orderUrl}
-              onChange={e => {
-                setOrderUrl(e.target.value);
-              }}
-              onKeyDown={handleOnKeyPress}
-            />
-            <SearchOutlined
-              type="button"
-              value="search"
-              onClick={handleOnClick}
-            />
-          </SearchBox>
-        </SearchContainer>
-        <ContentBox>
-          {reservationInfoList === null && showData && (
-            <InfoHeader>
-              <h5>예약을 조회할 수 없습니다.</h5>
-            </InfoHeader>
-          )}
-          {reservationInfoList !== null && showData && (
-            <>
-              <InfoHeader>
-                <h5>No. {reservationInfoList.order_number}</h5>
-              </InfoHeader>
-              <InfoContent>
-                <div>
-                  <h5>예약자</h5>
-                  <span>{reservationInfoList.name}</span>
-                </div>
-                <div>
-                  <h5>전화번호</h5>
-                  <span>{reservationInfoList.phone}</span>
-                </div>
-                <div>
-                  <h5>주소</h5>
-                  <span>{reservationInfoList.address}</span>
-                </div>
-              </InfoContent>
-              <InfoContent>
-                <div>
-                  <h5>예약일시</h5>
-                  <span>
-                    {reservationInfoList.day} &nbsp;
-                    {reservationInfoList.time}
-                  </span>
-                </div>
-                <div>
-                  <h5>예약종류</h5>
-                  <span>{reservationInfoList.type}</span>
-                </div>
-              </InfoContent>
-              <InfoFooter>
-                <button onClick={deleteOnClick}>예약취소</button>
-              </InfoFooter>
-            </>
-          )}
-        </ContentBox>
+        <SearchBar
+          orderUrl={orderUrl}
+          setOrderUrl={setOrderUrl}
+          handleOnKeyPress={handleOnKeyPress}
+          handleOnClick={handleOnClick}
+        />
+        <ReservationHistoryInfo
+          reservationInfoList={reservationInfoList}
+          showData={showData}
+          orderUrl={orderUrl}
+        />
       </ContainerBox>
     </Container>
   );
@@ -130,89 +64,8 @@ const ContainerBox = styled.div`
   background-color: white;
   border-radius: 5px;
   box-shadow: 2px 2px 3px 2px #dadada;
-`;
-const SearchContainer = styled.div`
-  background-color: #da005c;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  text-align: center;
-  padding-bottom: 10px;
-  h2 {
-    padding: 10px;
-    color: white;
-    font-size: 15px;
-    font-weight: 500;
-  }
-`;
-const SearchBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: white;
-  margin: 0 10px;
-  padding: 10px 50px;
-  border-radius: 5px;
-  svg {
-    color: #3a3a3a;
-    cursor: pointer;
-  }
-  input {
-    border: none;
-    font-size: 15px;
-    padding-left: 10px;
-    ::placeholder {
-      font-size: 13px;
-      padding: 5px;
-    }
-    :focus {
-      outline: none;
-    }
-  }
-`;
-const ContentBox = styled.div`
-  padding: 15px;
-  color: #2b2b2b;
-  border: 1.5px solid #efefef;
-  background-color: #f8f8f8;
-  min-height: 250px;
-`;
-const InfoHeader = styled.div`
-  border-bottom: 1.5px solid #ededed;
-  padding: 10px 0;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  h5 {
-    font-size: 13px;
-  }
-`;
-const InfoContent = styled.div`
-  border-bottom: 1.5px solid #ededed;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  div {
-    display: flex;
-    padding: 4px 0;
-    h5 {
-      font-size: 13px;
-      width: 60px;
-    }
-    span {
-      font-size: 13px;
-      font-weight: 700;
-    }
-  }
-`;
-const InfoFooter = styled.div`
-  display: flex;
-  justify-content: center;
-  padding-top: 5px;
-  button {
-    border: none;
-    background-color: #dadada;
-    border-radius: 4px;
-    padding: 4px 8px;
-    font-size: 12px;
-    cursor: pointer;
+  @media (max-width: 530px) {
+    width: 250px;
+    padding: 0px;
   }
 `;
