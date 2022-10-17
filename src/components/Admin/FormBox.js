@@ -8,9 +8,7 @@ const FormBox = ({ setOnOff }) => {
       ? setOnOff(prev => !prev)
       : alert('비밀번호를 확인하세요');
   };
-  const onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo);
-  };
+
   return (
     <>
       <Space>
@@ -26,7 +24,6 @@ const FormBox = ({ setOnOff }) => {
             remember: true,
           }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <Row>
