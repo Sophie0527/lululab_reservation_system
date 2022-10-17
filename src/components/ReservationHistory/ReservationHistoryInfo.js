@@ -11,6 +11,11 @@ const ReservationHistoryInfo = ({
       .delete(
         `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/${orderUrl}.json`
       )
+      .then(
+        axios.delete(
+          `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order_list/${orderUrl}.json`
+        )
+      )
       .then(alert('예약이 취소되었습니다.'));
     window.location.reload();
   };

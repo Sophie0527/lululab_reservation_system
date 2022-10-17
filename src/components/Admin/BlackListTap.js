@@ -23,7 +23,7 @@ const BlackListTop = () => {
     axios.get(fakeDataUrl).then(res => {
       setData(Object.values(res.data));
       message.success(
-        `${Object.values(res.data).length} 개 예약정보가 있습니다.`
+        `${Object.values(res.data).length} 명의 블랙회원 정보가 있습니다.`
       );
     });
   };
