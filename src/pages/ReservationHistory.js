@@ -7,30 +7,21 @@ const ReservationHistory = () => {
   const [reservationInfoList, setReservationInfoList] = useState([]);
   const [reservationNum, setReservationNum] = useState('');
   const [showData, setShowData] = useState(false);
-  const [typeData, setTypeData] = useState();
 
   const handleOnClick = () => {
     axios
       .get(
         `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/${orderUrl}.json`
       )
-      .then(res => setReservationInfoList(res.data));
+      .then(res => {
+        setReservationInfoList(res.data);
+      });
     if (orderUrl.length > 0) {
       setReservationNum(orderUrl);
       setShowData(true);
     } else {
       setReservationNum('');
       setShowData(false);
-    }
-    const typeNum = reservationInfoList.type;
-    if (typeNum === 1) {
-      setTypeData('진료');
-    } else if (typeNum === 2) {
-      setTypeData('검진');
-    } else if (typeNum === 3) {
-      setTypeData('관리');
-    } else if (typeNum === 4) {
-      setTypeData('처방');
     }
   };
 
@@ -45,7 +36,15 @@ const ReservationHistory = () => {
       .delete(
         `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/${reservationNum}.json`
       )
-      .then(alert('예약이 취소되었습니다.'));
+      .then(
+        axios.delete(
+          `https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order_list/${reservationNum}.json`
+        )
+      )
+      .then(() => {
+        alert('예약이 취소되었습니다.');
+        window.location.reload();
+      });
   };
   const [orderUrl, setOrderUrl] = useState('');
 
@@ -106,7 +105,7 @@ const ReservationHistory = () => {
                 </div>
                 <div>
                   <h5>예약종류</h5>
-                  <span>{typeData}</span>
+                  <span>{reservationInfoList.type}</span>
                 </div>
               </InfoContent>
               <InfoFooter>
