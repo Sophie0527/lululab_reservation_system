@@ -22,10 +22,11 @@
 
 ## 🚩 프로젝트 개요
 
-- 진행기간 : 10/14~ 10/17
-- 과제주관 : 룰루랩
-- 참여명단 : 정억화, 손소희
-- 배포 : [배포 바로가기](https://team13-lululab.netlify.app/)
+- **진행기간** : 10/14~ 10/17
+- **과제주관** : 룰루랩
+- **참여명단** : 정억화, 손소희
+- **프로젝트 설명** : 병원 예약 시스템 구축을 위해 예약하기, 예약조회가 가능하도록하였고, 또한 추가적으로 관리자페이지를 생성하여 예약자리스트를 확인하고 블랙리스트를 관리할 수 있도록 구현하였습니다.
+- **배포** : [배포 바로가기](https://team13-lululab.netlify.app/)
 
 <br/>
 <br/>
@@ -39,7 +40,8 @@
 
 ## ⚙ 데이터 관리
 
-- firebase firestorage를 이용하여 데이터 관리  
+- 원활한 데이터 관리를 위해  데이터를 가져오고 추가하고 삭제가 가능하도록 **firebase firestorage**를 사용<br/>
+
   - 전체 예약 API : [https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order.json](https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/order.json)  
   - 특정 예약 API : bookingclinic-fd4f0-default-rtdb.firebaseio.com/order/[예약번호].json
   - 전체 블랙리스트 API : [https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/blacklist.json](https://bookingclinic-fd4f0-default-rtdb.firebaseio.com/blacklist.json)  
